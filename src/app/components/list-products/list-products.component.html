@@ -1,7 +1,12 @@
 <div *ngIf="products$ | async as products" class="container">
   <div class="table-content">
-    <div class="text-input">
-      <input id="name" placeholder="Search" (input)="onInputChange($event)" />
+    <div class="search-container">
+      <div class="text-input">
+        <input id="name" placeholder="Search" (input)="onInputChange($event)" />
+      </div>
+      <div>
+        <button [routerLink]="['/add-product']" class="button-style">Agregar</button>
+      </div>
     </div>
     <div
       *ngIf="(filteredProducts$ | async)?.length === 0; else tableContent"

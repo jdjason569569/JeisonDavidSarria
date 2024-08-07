@@ -14,11 +14,10 @@
 .table-container {
   background-color: white;
   display: flex;
-  height: 80vh;
+  height: 60vh;
   width: 80vw;
   flex-direction: column;
   justify-content: center;
-  height: 60vh;
 }
 
 .text-input {
@@ -42,6 +41,7 @@
 .custom-table td {
   border: 1px solid #f4f6f9;
   padding: 9px;
+  width: 40vw;
 }
 
 .custom-table th {
@@ -62,4 +62,17 @@
 
 .results {
   margin: 30px;
+}
+
+.button-style{
+  background-color: yellow;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+}
+
+.search-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

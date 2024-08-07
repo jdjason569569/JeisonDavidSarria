@@ -1,0 +1,13 @@
+.container {
+  background-color: white;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.text-style{
+    font-weight: bolder;
+    font-size: larger;
+}
