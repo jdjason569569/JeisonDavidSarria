@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="table-content">
+    <div class="text-input">
+      <input id="name" placeholder="Search" />
+    </div>
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Logo</th>
+            <th>Nombre del producto</th>
+            <th>Descripcion</th>
+            <th>Fecha de liberacion</th>
+            <th>Fecha de reestructuracion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let product of (products$ | async) || []
+                | paginate : { itemsPerPage: 5, currentPage: page }
+            "
+          >
+            <td>{{ product.logo }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.date_release }}</td>
+            <td>{{ product.date_revision }}</td>
+          </tr>
+        </tbody>
+        <div class="results">Resultados</div>
+      </table>
+    </div>
+    <div class="pagination-container">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</div>

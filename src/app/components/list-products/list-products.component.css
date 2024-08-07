@@ -1,0 +1,56 @@
+.container {
+  background-color: #F4F6F9;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.table-content{
+  margin: 0 auto;
+}
+
+.results{
+  margin-top: 10px;
+
+}
+
+.table-container{
+  background-color: white;
+  display: flex;
+  height: 40vh;
+  width: 80vw;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-input{
+  margin-bottom: 10px;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  background-color: white;
+  margin: 20px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.custom-table th, .custom-table td {
+  border:  1px solid #F4F6F9;
+  padding: 9px;
+}
+
+.custom-table th {
+  background-color: #F4F6F9;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
