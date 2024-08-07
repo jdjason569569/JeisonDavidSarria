@@ -1,7 +1,7 @@
-<div class="container">
+<div *ngIf="products$ | async as products" class="container">
   <div class="table-content">
     <div class="text-input">
-      <input id="name" placeholder="Search" />
+      <input id="name" placeholder="Search" (input)="onInputChange($event)" />
     </div>
     <div class="table-container">
       <table class="custom-table">
@@ -17,7 +17,7 @@
         <tbody>
           <tr
             *ngFor="
-              let product of (products$ | async) || []
+              let product of (filteredProducts$ | async) || []
                 | paginate : { itemsPerPage: 5, currentPage: page }
             "
           >
@@ -28,7 +28,7 @@
             <td>{{ product.date_revision }}</td>
           </tr>
         </tbody>
-        <div class="results">Resultados</div>
+        <div class="results">{{countResult}} Resultados</div>
       </table>
     </div>
     <div class="pagination-container">

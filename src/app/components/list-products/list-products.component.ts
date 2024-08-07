@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
 import { ProductInterface } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -11,34 +11,31 @@ import { ProductService } from 'src/app/services/product.service';
 export class ListProductsComponent {
   page: number = 1;
   public products$: Observable<ProductInterface[]>;
+  public productsFilter?: ProductInterface[];
+  private searchTerm$ = new BehaviorSubject<string>('');
+  public countResult?: number;
+  filteredProducts$?: Observable<ProductInterface[]>;
 
   constructor(private productService: ProductService) {
-    //this.products$ = this.productService.getProducts();
-    this.products$ = of([
-      {
-        id: "prod001",
-        name: "Smartphone X",
-        description: "A high-performance smartphone with a 6.7-inch display.",
-        logo: "https://example.com/logo-smartphone-x.png",
-        date_release: new Date('2024-01-15'),
-        date_revision: new Date('2024-06-01')
-      },
-      {
-        id: "prod002",
-        name: "Laptop Pro",
-        description: "A lightweight and powerful laptop for professionals.",
-        logo: "https://example.com/logo-laptop-pro.png",
-        date_release: new Date('2023-11-20'),
-        date_revision: new Date('2024-03-10')
-      },
-      {
-        id: "prod003",
-        name: "Smartwatch Ultra",
-        description: "A smartwatch with advanced health tracking features.",
-        logo: "https://example.com/logo-smartwatch-ultra.png",
-        date_release: new Date('2024-05-01'),
-        date_revision: new Date('2024-07-15')
-      }
-    ])
+    this.products$ = this.productService.getProducts();
+    this.filteredProducts$ = this.searchTerm$.pipe(
+      switchMap((value) => {
+        return this.products$.pipe(
+          map((products) =>
+            products.filter((product) => {
+              return product.name.toLowerCase().includes(value.toLowerCase());
+            })
+          ),
+          tap((value) => {
+            this.countResult = value.length;
+          })
+        );
+      })
+    );
+  }
+
+  public onInputChange(event: Event): void {
+    const searchValue = (event.target as HTMLInputElement).value;
+    this.searchTerm$.next(searchValue);
   }
 }
