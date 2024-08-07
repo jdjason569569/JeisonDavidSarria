@@ -20,4 +20,8 @@ export class ProductService {
   public createProduct(product: ProductInterface) {
     return this.http.post(`${this.api}/products`, product);
   }
+
+  public findProduct(idProduct: number) {
+    return this.http.get<ProductInterface>(`${this.api}/products/${idProduct}`);
+  }
 }

@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
+  AsyncValidatorFn,
   FormBuilder,
   FormGroup,
   ValidationErrors,
@@ -9,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,7 +21,11 @@ import { ProductService } from 'src/app/services/product.service';
 export class AddProductComponent implements OnInit {
   public formCreateProduct: FormGroup = this.formBuilder.group({});
 
-  constructor(private formBuilder: FormBuilder, private productService: ProductService, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private productService: ProductService,
+    private router: Router
+  ) {}
   ngOnInit() {
     this.formCreateProduct = this.formBuilder.group({
       id: [
@@ -29,7 +34,9 @@ export class AddProductComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
         ],
+        [this.idValidator(this.productService)],
       ],
       name: [
         '',
@@ -52,19 +59,19 @@ export class AddProductComponent implements OnInit {
       date_revision: ['', [Validators.required]],
     });
 
-
-
-    this.formCreateProduct.get('date_release')?.valueChanges.subscribe((date: string) => {
-      if (date) {
-        const releaseDate = new Date(date);
-        releaseDate.setFullYear(releaseDate.getFullYear() + 1);
-        const revisedDate = formatDate(releaseDate, 'yyyy-MM-dd', 'en-US');
-        this.formCreateProduct.get('date_revision')?.setValue(revisedDate);
-      }
-    });
-
+    this.formCreateProduct
+      .get('date_release')
+      ?.valueChanges.subscribe((date: string) => {
+        if (date) {
+          const releaseDate = new Date(date);
+          releaseDate.setFullYear(releaseDate.getFullYear() + 1);
+          const revisedDate = formatDate(releaseDate, 'yyyy-MM-dd', 'en-US');
+          this.formCreateProduct.get('date_revision')?.setValue(revisedDate);
+        }
+      });
   }
 
+  //pasar a una clase aparte
   public dataReleaseValidator(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
@@ -81,14 +88,37 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+  //pasar a una clase aparte
+  public idValidator(service: ProductService): AsyncValidatorFn {
+    return (
+      control: AbstractControl
+    ): Observable<{ [key: string]: any } | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+      return service.findProduct(control.value).pipe(
+        map((exists) => (exists ? { idExists: true } : null)),
+        catchError(() => of(null))
+      );
+    };
+  }
+
   public onSubmit() {
     if (this.formCreateProduct?.valid) {
-      this.productService.createProduct(this.formCreateProduct.value).subscribe(value =>{
-        if(value){
-          this.router.navigate(['/list-products']);
-        }
-      });
-
+      this.productService
+        .createProduct(this.formCreateProduct.value)
+        .pipe(
+          tap((response) => {
+            if (response) {
+              this.router.navigate(['/list-products']);
+            }
+          }),
+          catchError((error) => {
+            console.error('Error in createProduct:', error);
+            return of([]);
+          })
+        )
+        .subscribe();
     }
   }
 

@@ -17,8 +17,8 @@
             formControlName="id"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('id')?.invalid &&
-                formCreateProduct?.get('id')?.touched
+                formCreateProduct.get('id')?.invalid &&
+                formCreateProduct.get('id')?.touched
             }"
           />
           <div
@@ -29,10 +29,16 @@
               ID es requerido.
             </div>
             <div *ngIf="formCreateProduct?.get('id')?.hasError('minlength')">
-              ID debe tener al menos 3 caracteres
+              ID debe tener al menos 3 numeros
             </div>
             <div *ngIf="formCreateProduct?.get('id')?.hasError('maxlength')">
-              ID no puede tener mas de 10 caracteres
+              ID no puede tener mas de 10 numeros
+            </div>
+            <div *ngIf="formCreateProduct?.get('id')?.hasError('pattern')">
+              ID debe ser un numero
+            </div>
+            <div *ngIf="formCreateProduct.get('id')?.hasError('idExists')">
+              El ID ya existe.
             </div>
           </div>
         </div>
@@ -45,21 +51,21 @@
             formControlName="name"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('name')?.invalid &&
-                formCreateProduct?.get('name')?.touched
+                formCreateProduct.get('name')?.invalid &&
+                formCreateProduct.get('name')?.touched
             }"
           />
           <div
             class="invalid-text"
-            *ngIf="formCreateProduct?.get('name')?.touched"
+            *ngIf="formCreateProduct.get('name')?.touched"
           >
-            <div *ngIf="formCreateProduct?.get('name')?.hasError('required')">
+            <div *ngIf="formCreateProduct.get('name')?.hasError('required')">
               Nombre es requerido.
             </div>
-            <div *ngIf="formCreateProduct?.get('name')?.hasError('minlength')">
+            <div *ngIf="formCreateProduct.get('name')?.hasError('minlength')">
               Nombre debe tener al menos 5 caracteres
             </div>
-            <div *ngIf="formCreateProduct?.get('name')?.hasError('maxlength')">
+            <div *ngIf="formCreateProduct.get('name')?.hasError('maxlength')">
               ID no puede tener mas de 100 caracteres
             </div>
           </div>
@@ -73,29 +79,29 @@
             formControlName="description"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('description')?.invalid &&
-                formCreateProduct?.get('description')?.touched
+                formCreateProduct.get('description')?.invalid &&
+                formCreateProduct.get('description')?.touched
             }"
           />
           <div
             class="invalid-text"
-            *ngIf="formCreateProduct?.get('description')?.touched"
+            *ngIf="formCreateProduct.get('description')?.touched"
           >
             <div
-              *ngIf="formCreateProduct?.get('description')?.hasError('required')"
+              *ngIf="formCreateProduct.get('description')?.hasError('required')"
             >
               Descripcion es requerida.
             </div>
             <div
               *ngIf="
-                formCreateProduct?.get('description')?.hasError('minlength')
+                formCreateProduct.get('description')?.hasError('minlength')
               "
             >
               Descripcion debe tener al menos 10 caracteres
             </div>
             <div
               *ngIf="
-                formCreateProduct?.get('description')?.hasError('maxlength')
+                formCreateProduct.get('description')?.hasError('maxlength')
               "
             >
               Descripcion no puede tener mas de 200 caracteres
@@ -111,15 +117,15 @@
             formControlName="logo"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('logo')?.invalid &&
-                formCreateProduct?.get('logo')?.touched
+                formCreateProduct.get('logo')?.invalid &&
+                formCreateProduct.get('logo')?.touched
             }"
           />
           <div
             class="invalid-text"
-            *ngIf="formCreateProduct?.get('logo')?.touched"
+            *ngIf="formCreateProduct.get('logo')?.touched"
           >
-            <div *ngIf="formCreateProduct?.get('logo')?.hasError('required')">
+            <div *ngIf="formCreateProduct.get('logo')?.hasError('required')">
               Logo es requerido.
             </div>
           </div>
@@ -133,22 +139,22 @@
             formControlName="date_release"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('date_release')?.invalid &&
-                formCreateProduct?.get('date_release')?.touched
+                formCreateProduct.get('date_release')?.invalid &&
+                formCreateProduct.get('date_release')?.touched
             }"
           />
           <div
             class="invalid-text"
-            *ngIf="formCreateProduct?.get('date_release')?.touched"
+            *ngIf="formCreateProduct.get('date_release')?.touched"
           >
             <div
               *ngIf="
-                formCreateProduct?.get('date_release')?.hasError('required')
+                formCreateProduct.get('date_release')?.hasError('required')
               "
             >
               Fecha liberacion es requerida.
             </div>
-            <div *ngIf="formCreateProduct?.get('date_release')?.invalid">
+            <div *ngIf="formCreateProduct.get('date_release')?.invalid">
               La fecha de lanzamiento no es válida.
             </div>
           </div>
@@ -162,22 +168,22 @@
             formControlName="date_revision"
             [ngClass]="{
               'invalid-field':
-                formCreateProduct?.get('date_revision')?.invalid &&
-                formCreateProduct?.get('date_revision')?.touched
+                formCreateProduct.get('date_revision')?.invalid &&
+                formCreateProduct.get('date_revision')?.touched
             }"
           />
           <div
             class="invalid-text"
-            *ngIf="formCreateProduct?.get('date_revision')?.touched"
+            *ngIf="formCreateProduct.get('date_revision')?.touched"
           >
             <div
               *ngIf="
-                formCreateProduct?.get('date_revision')?.hasError('required')
+                formCreateProduct.get('date_revision')?.hasError('required')
               "
             >
               Fecha liberacion es requerida.
             </div>
-            <div *ngIf="formCreateProduct?.get('date_revision')?.invalid">
+            <div *ngIf="formCreateProduct.get('date_revision')?.invalid">
               La fecha de revision debe ser exactamente un año posterior a la fecha de revision.
             </div>
           </div>
