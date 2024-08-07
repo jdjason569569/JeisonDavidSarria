@@ -3,36 +3,58 @@
     <div class="text-input">
       <input id="name" placeholder="Search" (input)="onInputChange($event)" />
     </div>
-    <div class="table-container">
-      <table class="custom-table">
-        <thead>
-          <tr>
-            <th>Logo</th>
-            <th>Nombre del producto</th>
-            <th>Descripcion</th>
-            <th>Fecha de liberacion</th>
-            <th>Fecha de reestructuracion</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let product of (filteredProducts$ | async) || []
-                | paginate : { itemsPerPage: 5, currentPage: page }
-            "
+    <div
+      *ngIf="(filteredProducts$ | async)?.length === 0; else tableContent"
+      class="no-products-message"
+    >
+      <p>No hay productos.</p>
+    </div>
+    <ng-template #tableContent>
+      <div class="table-container">
+        <div class="area-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Nombre del producto</th>
+                <th>Descripcion</th>
+                <th>Fecha de liberacion</th>
+                <th>Fecha de reestructuracion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let product of (filteredProducts$ | async) || []
+                    | paginate
+                      : { itemsPerPage: selectedValue, currentPage: page }
+                "
+              >
+                <td><img [src]="product.logo" /></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.date_release }}</td>
+                <td>{{ product.date_revision }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="results-container">
+          <div class="results">{{ countResult }} Resultados</div>
+          <select
+            class="results"
+            (change)="onValueChange($event)"
+            [ngModel]="selectedValue"
           >
-            <td>{{ product.logo }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.description }}</td>
-            <td>{{ product.date_release }}</td>
-            <td>{{ product.date_revision }}</td>
-          </tr>
-        </tbody>
-        <div class="results">{{countResult}} Resultados</div>
-      </table>
-    </div>
-    <div class="pagination-container">
-      <pagination-controls (pageChange)="page = $event"></pagination-controls>
-    </div>
+            <option *ngFor="let value of valuesPagination" [value]="value">
+              {{ value }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </ng-template>
   </div>
 </div>

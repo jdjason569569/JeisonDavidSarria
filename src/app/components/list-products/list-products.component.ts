@@ -14,7 +14,9 @@ export class ListProductsComponent {
   public productsFilter?: ProductInterface[];
   private searchTerm$ = new BehaviorSubject<string>('');
   public countResult?: number;
-  filteredProducts$?: Observable<ProductInterface[]>;
+  public filteredProducts$?: Observable<ProductInterface[]>;
+  valuesPagination: number[] = [5, 10, 20];
+  selectedValue: number = this.valuesPagination[0];
 
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
@@ -37,5 +39,10 @@ export class ListProductsComponent {
   public onInputChange(event: Event): void {
     const searchValue = (event.target as HTMLInputElement).value;
     this.searchTerm$.next(searchValue);
+  }
+
+  onValueChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedValue = +selectElement.value;
   }
 }
