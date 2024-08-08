@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+/**
+ * This component presents a mode to eliminate a product
+ */
+
 @Component({
   selector: 'app-delete-product-modal',
   templateUrl: './delete-product-modal.component.html',

@@ -4,6 +4,9 @@ import {
   ProductInterface,
 } from 'src/app/models/product.interface';
 
+/**
+ * This component manages the editing and deleting of a product
+ */
 @Component({
   selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',

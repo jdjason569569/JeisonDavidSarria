@@ -2,9 +2,17 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { catchError, map, Observable, of } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
 
+/**
+ *  This class contains the custom validators for the validations of the reactive forms.
+ */
+
 export class CustomValidators {
 
-
+  /**
+   * Validates that the date is greater than the current date
+   * @param control
+   * @returns
+   */
   public static dataReleaseValidator(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
@@ -20,6 +28,11 @@ export class CustomValidators {
     });
   }
 
+  /**
+   * Validate the existence of a product
+   * @param service
+   * @returns
+   */
   public static idValidator(service: ProductService): AsyncValidatorFn {
     return (
       control: AbstractControl

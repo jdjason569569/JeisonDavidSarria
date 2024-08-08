@@ -4,6 +4,9 @@ import { map, Observable } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
 import { ApiResponse, ProductInterface } from '../models/product.interface';
 
+/**
+ * This class allows requests to be made to the backend regarding the products
+ */
 @Injectable({
   providedIn: 'root',
 })

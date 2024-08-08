@@ -7,6 +7,10 @@ import { ProductInterface } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
 import { CustomValidators } from 'src/app/utils/validators/customValidators';
 
+/**
+ * This component manages the creation and edition of a product
+ */
+
 @Component({
   selector: 'manage-add-product',
   templateUrl: './manage-product.component.html',
@@ -15,7 +19,7 @@ import { CustomValidators } from 'src/app/utils/validators/customValidators';
 export class ManageProductComponent implements OnInit, OnDestroy {
   public formCreateProduct: FormGroup = this.formBuilder.group({});
   public formEditProduct: FormGroup = this.formBuilder.group({});
-  product?: ProductInterface;
+  public product?: ProductInterface;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -51,6 +55,10 @@ export class ManageProductComponent implements OnInit, OnDestroy {
         .subscribe()
     );
   }
+
+  /**
+   * Create an subscribe to calculate one more year in form createProduct
+   */
   public calculateNewDateRevision() {
     this.subscription.add(
       this.formCreateProduct
@@ -142,6 +150,9 @@ export class ManageProductComponent implements OnInit, OnDestroy {
     this.calculateEditDateRevision();
   }
 
+  /**
+   * Create an subscribe to calculate one more year in form editProduct
+   */
   public calculateEditDateRevision() {
     this.subscription.add(
       this.formEditProduct
