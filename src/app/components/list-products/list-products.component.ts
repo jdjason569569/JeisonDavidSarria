@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
 import { ProductInterface } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
@@ -17,6 +18,7 @@ export class ListProductsComponent {
   public filteredProducts$?: Observable<ProductInterface[]>;
   valuesPagination: number[] = [5, 10, 20];
   selectedValue: number = this.valuesPagination[0];
+  showMenuIndex: boolean = false;
 
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
@@ -41,8 +43,9 @@ export class ListProductsComponent {
     this.searchTerm$.next(searchValue);
   }
 
-  onValueChange(event: Event) {
+  public onValueChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedValue = +selectElement.value;
   }
+
 }

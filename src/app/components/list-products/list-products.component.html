@@ -5,7 +5,9 @@
         <input id="name" placeholder="Search" (input)="onInputChange($event)" />
       </div>
       <div>
-        <button [routerLink]="['/add-product']" class="button-style">Agregar</button>
+        <button [routerLink]="['/add-product']" class="button-style">
+          Agregar
+        </button>
       </div>
     </div>
     <div
@@ -25,6 +27,7 @@
                 <th>Descripcion</th>
                 <th>Fecha de liberacion</th>
                 <th>Fecha de reestructuracion</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +43,9 @@
                 <td>{{ product.description }}</td>
                 <td>{{ product.date_release }}</td>
                 <td>{{ product.date_revision }}</td>
+                <td>
+                  <app-dropdown [product]="product"></app-dropdown>
+                </td>
               </tr>
             </tbody>
           </table>

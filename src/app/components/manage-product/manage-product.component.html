@@ -1,0 +1,402 @@
+<div class="container">
+  <div class="table-content">
+    <form
+      *ngIf="!product"
+      class="form-container"
+      [formGroup]="formCreateProduct"
+      (ngSubmit)="onSubmit()"
+    >
+      <h1>Formulario de Registro</h1>
+      <hr />
+      <div class="field-container">
+        <div class="field-group">
+          <label for="id">ID</label>
+          <input
+            class="input-field"
+            type="text"
+            id="id"
+            formControlName="id"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('id')?.invalid &&
+                formCreateProduct.get('id')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct?.get('id')?.touched"
+          >
+            <div *ngIf="formCreateProduct?.get('id')?.hasError('required')">
+              ID es requerido.
+            </div>
+            <div *ngIf="formCreateProduct?.get('id')?.hasError('minlength')">
+              ID debe tener al menos 3 numeros
+            </div>
+            <div *ngIf="formCreateProduct?.get('id')?.hasError('maxlength')">
+              ID no puede tener mas de 10 numeros
+            </div>
+            <div *ngIf="formCreateProduct?.get('id')?.hasError('pattern')">
+              ID debe ser un numero
+            </div>
+            <div *ngIf="formCreateProduct.get('id')?.hasError('idExists')">
+              El ID ya existe.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="name">Nombre</label>
+          <input
+            class="input-field"
+            type="text"
+            id="name"
+            formControlName="name"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('name')?.invalid &&
+                formCreateProduct.get('name')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct.get('name')?.touched"
+          >
+            <div *ngIf="formCreateProduct.get('name')?.hasError('required')">
+              Nombre es requerido.
+            </div>
+            <div *ngIf="formCreateProduct.get('name')?.hasError('minlength')">
+              Nombre debe tener al menos 6 caracteres
+            </div>
+            <div *ngIf="formCreateProduct.get('name')?.hasError('maxlength')">
+              ID no puede tener mas de 100 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="description">Descripcion</label>
+          <input
+            class="input-field"
+            type="text"
+            id="description"
+            formControlName="description"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('description')?.invalid &&
+                formCreateProduct.get('description')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct.get('description')?.touched"
+          >
+            <div
+              *ngIf="formCreateProduct.get('description')?.hasError('required')"
+            >
+              Descripcion es requerida.
+            </div>
+            <div
+              *ngIf="
+                formCreateProduct.get('description')?.hasError('minlength')
+              "
+            >
+              Descripcion debe tener al menos 10 caracteres
+            </div>
+            <div
+              *ngIf="
+                formCreateProduct.get('description')?.hasError('maxlength')
+              "
+            >
+              Descripcion no puede tener mas de 200 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="logo">Logo</label>
+          <input
+            class="input-field"
+            type="text"
+            id="logo"
+            formControlName="logo"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('logo')?.invalid &&
+                formCreateProduct.get('logo')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct.get('logo')?.touched"
+          >
+            <div *ngIf="formCreateProduct.get('logo')?.hasError('required')">
+              Logo es requerido.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="date_release">Fecha de liberacion</label>
+          <input
+            class="input-field"
+            type="date"
+            id="date_release"
+            formControlName="date_release"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('date_release')?.invalid &&
+                formCreateProduct.get('date_release')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct.get('date_release')?.touched"
+          >
+            <div
+              *ngIf="
+                formCreateProduct.get('date_release')?.hasError('required')
+              "
+            >
+              Fecha liberacion es requerida.
+            </div>
+            <div *ngIf="formCreateProduct.get('date_release')?.invalid">
+              La fecha de lanzamiento no es válida.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="date_revision">Fecha de revision</label>
+          <input
+            class="input-field"
+            type="date"
+            id="date_revision"
+            formControlName="date_revision"
+            [ngClass]="{
+              'invalid-field':
+                formCreateProduct.get('date_revision')?.invalid &&
+                formCreateProduct.get('date_revision')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formCreateProduct.get('date_revision')?.touched"
+          >
+            <div
+              *ngIf="
+                formCreateProduct.get('date_revision')?.hasError('required')
+              "
+            >
+              Fecha liberacion es requerida.
+            </div>
+            <div *ngIf="formCreateProduct.get('date_revision')?.invalid">
+              La fecha de revision debe ser exactamente un año posterior a la
+              fecha de revision.
+            </div>
+          </div>
+        </div>
+        <div class="field-button">
+          <button (click)="clearForm()" class="button-style-clear">
+            Reiniciar
+          </button>
+          <button
+            type="submit"
+            [disabled]="formCreateProduct.invalid"
+            class="button-style-send"
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <form
+      *ngIf="product"
+      class="form-container"
+      [formGroup]="formEditProduct"
+      (ngSubmit)="onSubmit()"
+    >
+      <h1>Actualizar Producto</h1>
+      <hr />
+      <div class="field-container">
+        <div class="field-group">
+          <label for="id">ID</label>
+          <input
+            class="input-field"
+            type="text"
+            id="id"
+            formControlName="id"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('id')?.invalid &&
+                formEditProduct.get('id')?.touched
+            }"
+          />
+          <div class="invalid-text" *ngIf="formEditProduct?.get('id')?.touched">
+            <div *ngIf="formEditProduct?.get('id')?.hasError('required')">
+              ID es requerido.
+            </div>
+            <div *ngIf="formEditProduct?.get('id')?.hasError('minlength')">
+              ID debe tener al menos 3 numeros
+            </div>
+            <div *ngIf="formEditProduct?.get('id')?.hasError('maxlength')">
+              ID no puede tener mas de 10 numeros
+            </div>
+            <div *ngIf="formEditProduct?.get('id')?.hasError('pattern')">
+              ID debe ser un numero
+            </div>
+            <div *ngIf="formEditProduct.get('id')?.hasError('idExists')">
+              El ID ya existe.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="name">Nombre</label>
+          <input
+            class="input-field"
+            type="text"
+            id="name"
+            formControlName="name"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('name')?.invalid &&
+                formEditProduct.get('name')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formEditProduct.get('name')?.touched"
+          >
+            <div *ngIf="formEditProduct.get('name')?.hasError('required')">
+              Nombre es requerido.
+            </div>
+            <div *ngIf="formEditProduct.get('name')?.hasError('minlength')">
+              Nombre debe tener al menos 6 caracteres
+            </div>
+            <div *ngIf="formEditProduct.get('name')?.hasError('maxlength')">
+              ID no puede tener mas de 100 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="description">Descripcion</label>
+          <input
+            class="input-field"
+            type="text"
+            id="description"
+            formControlName="description"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('description')?.invalid &&
+                formEditProduct.get('description')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formEditProduct.get('description')?.touched"
+          >
+            <div
+              *ngIf="formEditProduct.get('description')?.hasError('required')"
+            >
+              Descripcion es requerida.
+            </div>
+            <div
+              *ngIf="formEditProduct.get('description')?.hasError('minlength')"
+            >
+              Descripcion debe tener al menos 10 caracteres
+            </div>
+            <div
+              *ngIf="formEditProduct.get('description')?.hasError('maxlength')"
+            >
+              Descripcion no puede tener mas de 200 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="logo">Logo</label>
+          <input
+            class="input-field"
+            type="text"
+            id="logo"
+            formControlName="logo"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('logo')?.invalid &&
+                formEditProduct.get('logo')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formEditProduct.get('logo')?.touched"
+          >
+            <div *ngIf="formEditProduct.get('logo')?.hasError('required')">
+              Logo es requerido.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="date_release">Fecha de liberacion</label>
+          <input
+            class="input-field"
+            type="date"
+            id="date_release"
+            formControlName="date_release"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('date_release')?.invalid &&
+                formEditProduct.get('date_release')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formEditProduct.get('date_release')?.touched"
+          >
+            <div
+              *ngIf="formEditProduct.get('date_release')?.hasError('required')"
+            >
+              Fecha liberacion es requerida.
+            </div>
+            <div *ngIf="formEditProduct.get('date_release')?.invalid">
+              La fecha de lanzamiento no es válida.
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="date_revision">Fecha de revision</label>
+          <input
+            class="input-field"
+            type="date"
+            id="date_revision"
+            formControlName="date_revision"
+            [ngClass]="{
+              'invalid-field':
+                formEditProduct.get('date_revision')?.invalid &&
+                formEditProduct.get('date_revision')?.touched
+            }"
+          />
+          <div
+            class="invalid-text"
+            *ngIf="formEditProduct.get('date_revision')?.touched"
+          >
+            <div
+              *ngIf="formEditProduct.get('date_revision')?.hasError('required')"
+            >
+              Fecha liberacion es requerida.
+            </div>
+            <div *ngIf="formEditProduct.get('date_revision')?.invalid">
+              La fecha de revision debe ser exactamente un año posterior a la
+              fecha de revision.
+            </div>
+          </div>
+        </div>
+        <div class="field-button">
+          <button (click)="clearForm()" class="button-style-clear">
+            Reiniciar
+          </button>
+          <button
+            type="submit"
+            [disabled]="formEditProduct.invalid"
+            class="button-style-send"
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

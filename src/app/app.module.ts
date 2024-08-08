@@ -7,13 +7,15 @@ import { ListProductsComponent } from './components/list-products/list-products.
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddProductComponent } from './components/add-product/add-product.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { ManageProductComponent } from './components/manage-product/manage-product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListProductsComponent,
-    AddProductComponent
+    ManageProductComponent,
+    DropdownComponent
   ],
   imports: [
     BrowserModule,

@@ -14,14 +14,27 @@ export class ProductService {
    private api = environment.apiUrl;
 
   public getProducts(): Observable<ProductInterface[]>{
+    console.log("getProducts");
      return this.http.get<ApiResponse>(`${this.api}/products`).pipe(map(response => response.data));
   }
 
   public createProduct(product: ProductInterface) {
+    console.log("createProduct");
     return this.http.post(`${this.api}/products`, product);
   }
 
+  public updateProduct(product: ProductInterface) {
+    console.log("updateProduct");
+    return this.http.put(`${this.api}/products/${product.id}`, product);
+  }
+
+  public verifyProduct(idProduct: number) {
+    console.log("verifyProduct");
+    return this.http.get<ProductInterface>(`${this.api}/products/verification/${idProduct}`);
+  }
+
   public findProduct(idProduct: number) {
+    console.log("findProduct");
     return this.http.get<ProductInterface>(`${this.api}/products/${idProduct}`);
   }
 }
