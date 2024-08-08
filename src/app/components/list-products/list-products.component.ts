@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   modalProduct,
   ProductInterface,
@@ -12,7 +18,7 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './list-products.component.html',
   styleUrls: ['./list-products.component.css'],
 })
-export class ListProductsComponent {
+export class ListProductsComponent implements OnDestroy{
   page: number = 1;
   public products$: Observable<ProductInterface[]>;
   public productsFilter?: ProductInterface[];
@@ -25,6 +31,7 @@ export class ListProductsComponent {
   showModal = false;
   nameProduct?: string;
   idProduct!: number;
+  private subscription: Subscription = new Subscription();
 
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
@@ -52,7 +59,6 @@ export class ListProductsComponent {
   public onValueChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedValue = +selectElement.value;
-
   }
 
   openModal(value: modalProduct) {
@@ -62,20 +68,26 @@ export class ListProductsComponent {
   }
 
   public deleteProduct() {
-    this.productService
-      .deleteProduct(this.idProduct)
-      .pipe(
-        map((value) => {
-          if (value) {
-            this.closeModal();
-            this.products$ = this.productService.getProducts();
-          }
-        })
-      )
-      .subscribe();
+    this.subscription.add(
+      this.productService
+        .deleteProduct(this.idProduct)
+        .pipe(
+          map((value) => {
+            if (value) {
+              this.closeModal();
+              this.products$ = this.productService.getProducts();
+            }
+          })
+        )
+        .subscribe()
+    );
   }
 
   closeModal() {
     this.showModal = false;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
