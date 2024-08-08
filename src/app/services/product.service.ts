@@ -37,4 +37,9 @@ export class ProductService {
     console.log("findProduct");
     return this.http.get<ProductInterface>(`${this.api}/products/${idProduct}`);
   }
+
+  public deleteProduct(idProduct: number) {
+    console.log("delete");
+    return this.http.delete(`${this.api}/products/${idProduct}`);
+  }
 }

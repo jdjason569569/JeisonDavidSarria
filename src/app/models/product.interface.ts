@@ -10,3 +10,9 @@ export interface ProductInterface {
 export interface ApiResponse {
   data: ProductInterface[];
 }
+
+export interface modalProduct {
+  isOpen: boolean;
+  nameProduct?: string;
+  idProduct: number;
+}

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
-import { ProductInterface } from 'src/app/models/product.interface';
+import {
+  modalProduct,
+  ProductInterface,
+} from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -19,6 +22,9 @@ export class ListProductsComponent {
   valuesPagination: number[] = [5, 10, 20];
   selectedValue: number = this.valuesPagination[0];
   showMenuIndex: boolean = false;
+  showModal = false;
+  nameProduct?: string;
+  idProduct!: number;
 
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
@@ -46,6 +52,30 @@ export class ListProductsComponent {
   public onValueChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.selectedValue = +selectElement.value;
+
   }
 
+  openModal(value: modalProduct) {
+    this.showModal = value.isOpen;
+    this.nameProduct = value.nameProduct;
+    this.idProduct = value.idProduct;
+  }
+
+  public deleteProduct() {
+    this.productService
+      .deleteProduct(this.idProduct)
+      .pipe(
+        map((value) => {
+          if (value) {
+            this.closeModal();
+            this.products$ = this.productService.getProducts();
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
 }

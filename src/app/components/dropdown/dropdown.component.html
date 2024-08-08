@@ -7,8 +7,7 @@
     </div>
   </button>
   <div class="dropdown-menu" *ngIf="isOpen">
-    <a href="#" [routerLink]="['/edit-product', product?.id]">Editar</a>
-    <a href="#">Option 2</a>
-    <a href="#">Option 3</a>
+    <a [routerLink]="['/edit-product', product.id]">Editar</a>
+    <a (click)="openModalMethod()">Eliminar</a>
   </div>
 </div>

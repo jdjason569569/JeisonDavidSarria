@@ -9,13 +9,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { ManageProductComponent } from './components/manage-product/manage-product.component';
+import { DeleteProductModalComponent } from './components/delete-product-modal/delete-product-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListProductsComponent,
     ManageProductComponent,
-    DropdownComponent
+    DropdownComponent,
+    DeleteProductModalComponent
   ],
   imports: [
     BrowserModule,
