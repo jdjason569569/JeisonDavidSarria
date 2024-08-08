@@ -16,11 +16,11 @@ export class DropdownComponent {
     new EventEmitter<modalProduct>();
   openModal = false;
 
-  toggleDropdown() {
+  public toggleDropdown() {
     this.isOpen = !this.isOpen;
   }
 
-  openModalMethod() {
+  public openModalMethod() {
     this.isOpenModal.emit({
       isOpen: true,
       nameProduct: this.product?.name,

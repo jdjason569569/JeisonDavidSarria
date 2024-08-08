@@ -1,25 +1,11 @@
 import { formatDate } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  map,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, of, Subscription, switchMap, tap } from 'rxjs';
 import { ProductInterface } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
+import { CustomValidators } from 'src/app/utils/validators/customValidators';
 
 @Component({
   selector: 'manage-add-product',
@@ -41,6 +27,11 @@ export class ManageProductComponent implements OnInit, OnDestroy {
     this.createProductForm();
   }
   ngOnInit() {
+    this.initFormEditProduct();
+    this.calculateNewDateRevision();
+  }
+
+  public initFormEditProduct() {
     this.subscription.add(
       this.route.paramMap
         .pipe(
@@ -59,7 +50,8 @@ export class ManageProductComponent implements OnInit, OnDestroy {
         )
         .subscribe()
     );
-
+  }
+  public calculateNewDateRevision() {
     this.subscription.add(
       this.formCreateProduct
         .get('date_release')
@@ -84,7 +76,7 @@ export class ManageProductComponent implements OnInit, OnDestroy {
           Validators.maxLength(10),
           Validators.pattern('^[0-9]*$'),
         ],
-        [this.idValidator(this.productService)],
+        [CustomValidators.idValidator(this.productService)],
       ],
       name: [
         '',
@@ -103,7 +95,11 @@ export class ManageProductComponent implements OnInit, OnDestroy {
         ],
       ],
       logo: ['', Validators.required],
-      date_release: ['', [Validators.required], [this.dataReleaseValidator]],
+      date_release: [
+        '',
+        [Validators.required],
+        [CustomValidators.dataReleaseValidator],
+      ],
       date_revision: ['', [Validators.required]],
     });
   }
@@ -139,10 +135,14 @@ export class ManageProductComponent implements OnInit, OnDestroy {
       date_release: [
         product?.date_release,
         [Validators.required],
-        [this.dataReleaseValidator],
+        [CustomValidators.dataReleaseValidator],
       ],
       date_revision: [product?.date_revision, [Validators.required]],
     });
+    this.calculateEditDateRevision();
+  }
+
+  public calculateEditDateRevision() {
     this.subscription.add(
       this.formEditProduct
         .get('date_release')
@@ -157,92 +157,53 @@ export class ManageProductComponent implements OnInit, OnDestroy {
     );
   }
 
-  public getIdValidators(product: any) {
-    const baseValidators = [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(10),
-      Validators.pattern('^[0-9]*$'),
-    ];
-
-    if (!product) {
-      return [baseValidators, this.idValidator(this.productService)];
-    }
-
-    return baseValidators;
-  }
-
-  //pasar a una clase aparte
-  public dataReleaseValidator(
-    control: AbstractControl
-  ): Observable<ValidationErrors | null> {
-    return new Observable((observer) => {
-      const currentDate = new Date();
-      const inputDate = new Date(control.value);
-
-      if (inputDate >= currentDate) {
-        observer.next(null);
-      } else {
-        observer.next({ fechaInvalid: true });
-      }
-      observer.complete();
-    });
-  }
-
-  //pasar a una clase aparte
-  public idValidator(service: ProductService): AsyncValidatorFn {
-    return (
-      control: AbstractControl
-    ): Observable<{ [key: string]: any } | null> => {
-      if (!control.value) {
-        return of(null);
-      }
-      return service.verifyProduct(control.value).pipe(
-        map((exists) => (exists ? { idExists: true } : null)),
-        catchError(() => of(null))
-      );
-    };
-  }
-
   public onSubmit() {
     if (this.product) {
-      if (this.formEditProduct?.valid) {
-        this.subscription.add(
-          this.productService
-            .updateProduct(this.formEditProduct.value)
-            .pipe(
-              tap((response) => {
-                if (response) {
-                  this.router.navigate(['/list-products']);
-                }
-              }),
-              catchError((error) => {
-                console.error('Error in updateProduct:', error);
-                return of([]);
-              })
-            )
-            .subscribe()
-        );
-      }
+      this.updateFormProduct();
     } else {
-      if (this.formCreateProduct?.valid) {
-        this.subscription.add(
-          this.productService
-            .createProduct(this.formCreateProduct.value)
-            .pipe(
-              tap((response) => {
-                if (response) {
-                  this.router.navigate(['/list-products']);
-                }
-              }),
-              catchError((error) => {
-                console.error('Error in createProduct:', error);
-                return of([]);
-              })
-            )
-            .subscribe()
-        );
-      }
+      this.createFormProduct();
+    }
+  }
+
+  public createFormProduct() {
+    if (this.formCreateProduct?.valid) {
+      this.subscription.add(
+        this.productService
+          .createProduct(this.formCreateProduct.value)
+          .pipe(
+            tap((response) => {
+              if (response) {
+                this.router.navigate(['/list-products']);
+              }
+            }),
+            catchError((error) => {
+              console.error('Error in createProduct:', error);
+              return of([]);
+            })
+          )
+          .subscribe()
+      );
+    }
+  }
+
+  public updateFormProduct() {
+    if (this.formEditProduct?.valid) {
+      this.subscription.add(
+        this.productService
+          .updateProduct(this.formEditProduct.value)
+          .pipe(
+            tap((response) => {
+              if (response) {
+                this.router.navigate(['/list-products']);
+              }
+            }),
+            catchError((error) => {
+              console.error('Error in updateProduct:', error);
+              return of([]);
+            })
+          )
+          .subscribe()
+      );
     }
   }
 

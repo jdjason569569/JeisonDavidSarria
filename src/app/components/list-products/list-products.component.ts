@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BehaviorSubject,
   map,
@@ -18,7 +18,7 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './list-products.component.html',
   styleUrls: ['./list-products.component.css'],
 })
-export class ListProductsComponent implements OnDestroy{
+export class ListProductsComponent implements OnInit, OnDestroy {
   page: number = 1;
   public products$: Observable<ProductInterface[]>;
   public productsFilter?: ProductInterface[];
@@ -35,6 +35,13 @@ export class ListProductsComponent implements OnDestroy{
 
   constructor(private productService: ProductService) {
     this.products$ = this.productService.getProducts();
+  }
+
+  ngOnInit() {
+    this.filterProducts();
+  }
+
+  public filterProducts() {
     this.filteredProducts$ = this.searchTerm$.pipe(
       switchMap((value) => {
         return this.products$.pipe(
@@ -61,7 +68,7 @@ export class ListProductsComponent implements OnDestroy{
     this.selectedValue = +selectElement.value;
   }
 
-  openModal(value: modalProduct) {
+  public openModal(value: modalProduct) {
     this.showModal = value.isOpen;
     this.nameProduct = value.nameProduct;
     this.idProduct = value.idProduct;
